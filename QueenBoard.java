@@ -39,22 +39,29 @@ public class QueenBoard{
  *excludes the character up to the *)
  */
 
- public String toString(){
-   String ret = "";
-   for (int x = 0; x < board.length; x++) {
-     for (int y = 0; y < board[0].length; y++) {
-       if (board[x][y]==0){
-         if (y == board[0].length-1) {
-           ret = ret + "_"; //for the last column in each row, there is no space after it
-         } else {
-           ret = ret + "_ ";
-         }
-       }
-     }
-     ret = ret + "\n";
-   }
-   return ret;
- }
+  public String toString(){
+    String ret = "";
+    for (int x = 0; x < board.length; x++) {
+      for (int y = 0; y < board[0].length; y++) {
+        if (board[x][y]==0){
+          if (y == board[0].length-1) {
+            ret = ret + "_"; //for the last column in each row, there is no space after it
+          } else {
+            ret = ret + "_ ";
+          }
+        }
+        if (board[x][y]==1){
+          if (y == board[0].length-1) {
+            ret = ret + "Q";
+          } else {
+            ret = ret + "Q ";
+          }
+        }
+      }
+      ret = ret + "\n";
+    }
+    return ret;
+  }
 
 
  /**
@@ -71,10 +78,14 @@ public class QueenBoard{
  //public int countSolutions(){}
 
 
-public static void main(String[] args) {
-  QueenBoard A = new QueenBoard(10);
-  System.out.println(A);
-}
+ public static void main(String[] args) {
+     QueenBoard A = new QueenBoard(10);
+     A.addQueen(1,1);
+     A.addQueen(1,9);
+     A.removeQueen(1,9);
+     System.out.println(A);
+ }
+
 }
 
 
