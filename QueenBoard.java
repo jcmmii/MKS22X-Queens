@@ -10,9 +10,21 @@ public class QueenBoard{
     }
   }
 
-  //private boolean addQueen(int r, int c) {}
+  private boolean addQueen(int r, int c) {
+    if (board[r][c]==0) {
+      board[r][c] = 1;
+      return true;
+    }
+    return false;
+  }
 
-  //private boolean removeQueen(int r, int c) {}
+  private boolean removeQueen(int r, int c) {
+    if (board[r][c]==1) {
+      board[r][c] = 0;
+      return true;
+    }
+    return false;
+  }
 
   /**
  *@return The output string formatted as follows:
@@ -32,7 +44,11 @@ public class QueenBoard{
    for (int x = 0; x < board.length; x++) {
      for (int y = 0; y < board[0].length; y++) {
        if (board[x][y]==0){
-         ret = ret + "_";
+         if (y == board[0].length-1) {
+           ret = ret + "_";
+         } else {
+           ret = ret + "_ ";
+         }
        }
      }
      ret = ret + "\n";
