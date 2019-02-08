@@ -45,7 +45,7 @@ public class QueenBoard{
      for (int y = 0; y < board[0].length; y++) {
        if (board[x][y]==0){
          if (y == board[0].length-1) {
-           ret = ret + "_";
+           ret = ret + "_"; //for the last column in each row, there is no space after it
          } else {
            ret = ret + "_ ";
          }
