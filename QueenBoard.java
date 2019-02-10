@@ -11,7 +11,7 @@ public class QueenBoard{
   }
 
   private boolean addQueen(int r, int c) {
-    if (board[r][c]==0) {
+    if (board[r][c]==0 && safe(r,c)) {
       board[r][c] = -1;
       return true;
     }
@@ -19,14 +19,11 @@ public class QueenBoard{
   }
 
   private boolean removeQueen(int r, int c) {
-    if (board[r][c]==-1) {
-      board[r][c] = 0;
-      return true;
-    }
-    return false;
+    board[r][c] = 0;
+    return true;
   }
 
-  private boolean safe(int r, int c, int[][] board){
+  private boolean safe(int r, int c){
     //checks left
     for (int x = 0; x<c; x++) {
       if (board[r][x]==-1) return false;
@@ -68,7 +65,6 @@ public class QueenBoard{
     }
 
   }
-
 
   /**
  *@return The output string formatted as follows:
@@ -113,7 +109,16 @@ public class QueenBoard{
  *        true when the board is solveable, and leaves the board in a solved state
  *@throws IllegalStateException when the board starts with any non-zero value
  */
- public boolean solve(){}
+ public boolean solve(){
+   for (int x = 0; x < board.length; x++) {
+     for (int y = 0; y < board[0].length; y++) {
+       if (board[x][y] != 0) {
+         throw new IllegalStateException();
+        }
+      }
+    }
+   return sHelp(0);
+ }
 
  /**
  *@return the number of solutions found, and leaves the board filled with only 0's
@@ -121,11 +126,19 @@ public class QueenBoard{
  */
  public int countSolutions(){}
 
+
 //--------------------------------
 //Helper Methods for various tasks
 
-private boolean sHelp(){
-
+private boolean sHelp(int c) {
+  for (int r = 0; r < board.length; r++) {
+    if (safe(r,c)) {
+      addQueen(r,c);
+      sHelp(c+1);
+    } else {
+      removeQueen(r,c);
+    }
+  }
 }
 
 
