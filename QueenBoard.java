@@ -77,6 +77,13 @@ public class QueenBoard{
  */
  //public int countSolutions(){}
 
+//--------------------------------
+//Helper Methods for various tasks
+
+private int cSHelp(){
+
+}
+
 
  public static void main(String[] args) {
      QueenBoard A = new QueenBoard(10);
