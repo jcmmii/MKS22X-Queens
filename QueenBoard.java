@@ -23,6 +23,10 @@ public class QueenBoard{
     return true;
   }
 
+  //checks if a Queen can be placed on a certain tile
+  //achieved by checking all 8 directions for a Queen
+  //if a Queen is found, that Queen is attacking the square, and a new Queen cannot be replaced
+  //otherwise that tile is good
   private boolean safe(int r, int c){
     //checks left
     for (int x = 0; x<c; x++) {
@@ -30,7 +34,7 @@ public class QueenBoard{
     }
 
     //checks right
-    for (int x = c; x < board.length[0];x++) {
+    for (int x = c; x < board[0].length;x++) {
       if (board[r][x]==-1) return false;
     }
 
@@ -50,7 +54,7 @@ public class QueenBoard{
     }
 
     //checks upperright diagonal
-    for (int x = r, y = c; x >=0 && y < board.length[0]; x--, y++) {
+    for (int x = r, y = c; x >=0 && y < board[0].length; x--, y++) {
       if (board[x][y]==-1) return false;
     }
 
@@ -60,10 +64,10 @@ public class QueenBoard{
     }
 
     //checks lowerright diagonal
-    for (int x = r, y = c; x < board.length, y < board.length[0]; x++, y++) {
+    for (int x = r, y = c; x < board.length && y < board[0].length; x++, y++) {
       if (board[x][y]==-1) return false;
     }
-
+    return true;
   }
 
   /**
@@ -128,31 +132,29 @@ public class QueenBoard{
 
 
 //--------------------------------
-//Helper Methods for various tasks
+//Helper Methods for the two main methods solve() and countSolutions()
 
 private boolean sHelp(int c) {
+  if (c >= board[0].length) return true;
   for (int r = 0; r < board.length; r++) {
     if (safe(r,c)) {
       addQueen(r,c);
-      sHelp(c+1);
-    } else {
+      if (sHelp(c+1)) return true;
       removeQueen(r,c);
     }
   }
+  return false;
 }
 
 
-private int cSHelp(){
-
-}
+private int cSHelp(){}
 
  public static void main(String[] args) {
-     QueenBoard A = new QueenBoard(10);
-     A.addQueen(1,1);
-     A.addQueen(1,9);
-     A.removeQueen(1,9);
-     A.addQueen(3,9);
-     System.out.println(A);
+     QueenBoard A = new QueenBoard(4);
+     System.out.println(A.solve());
+
+
+
  }
 
 }
