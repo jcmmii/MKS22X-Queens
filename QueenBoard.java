@@ -128,8 +128,16 @@ public class QueenBoard{
  *@return the number of solutions found, and leaves the board filled with only 0's
  *@throws IllegalStateException when the board starts with any non-zero value
  */
- public int countSolutions(){}
-
+ public int countSolutions(){
+   for (int x = 0; x < board.length; x++) {
+     for (int y = 0; y < board[0].length; y++) {
+       if (board[x][y] != 0) {
+         throw new IllegalStateException();
+        }
+      }
+    }
+    return cSHelp(0);
+  }
 
 //--------------------------------
 //Helper Methods for the two main methods solve() and countSolutions()
@@ -147,11 +155,22 @@ private boolean sHelp(int c) {
 }
 
 
-private int cSHelp(){}
+private int cSHelp(int c){
+  int count = 0;
+  if (c >= board.length) return 1;
+  for (int r = 0; r < board.length; r++) {
+    if (addQueen(r,c) == true) count = count + cSHelp(c + 1);
+    removeQueen(r,c);
+  }
+  return count;
+}
 
  public static void main(String[] args) {
-     QueenBoard A = new QueenBoard(4);
+     QueenBoard A = new QueenBoard(8);
      System.out.println(A.solve());
+
+     QueenBoard B = new QueenBoard(10);
+     System.out.println(B.countSolutions());
 
 
 
