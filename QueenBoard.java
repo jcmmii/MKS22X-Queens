@@ -1,6 +1,7 @@
 public class QueenBoard{
   private int[][] board;
 
+  //constructor
   public QueenBoard(int size){
     board = new int[size][size];
     for (int x = 0; x < size; x++) {
@@ -24,8 +25,8 @@ public class QueenBoard{
   }
 
   //checks if a Queen can be placed on a certain tile
-  //achieved by checking all 8 directions for a Queen
-  //if a Queen is found, that Queen is attacking the square, and a new Queen cannot be replaced
+  //achieved by checking all 8 directions for another Queen
+  //if another Queen is found, that Queen is attacking the square, and a new Queen cannot be placed
   //otherwise that tile is good
   private boolean safe(int r, int c){
     //checks left
@@ -82,7 +83,6 @@ public class QueenBoard{
  *(pythonic string notation for clarity,
  *excludes the character up to the *)
  */
-
   public String toString(){
     String ret = "";
     for (int x = 0; x < board.length; x++) {
@@ -107,21 +107,25 @@ public class QueenBoard{
     return ret;
   }
 
-
  /**
  *@return false when the board is not solveable and leaves the board filled with zeros;
  *        true when the board is solveable, and leaves the board in a solved state
  *@throws IllegalStateException when the board starts with any non-zero value
  */
  public boolean solve(){
-   for (int x = 0; x < board.length; x++) {
+   if (board.length == 0) return true; //special case: 0*0 is solvable
+   for (int x = 0; x < board.length; x++) { //if board starts with any non-zero val, throws exception
      for (int y = 0; y < board[0].length; y++) {
        if (board[x][y] != 0) {
          throw new IllegalStateException();
         }
       }
     }
-   return sHelp(0);
+    if (sHelp(0)) {
+      return true;
+    }
+    clear(); //if not solvable, clears, and returns false
+    return false;
  }
 
  /**
@@ -129,21 +133,24 @@ public class QueenBoard{
  *@throws IllegalStateException when the board starts with any non-zero value
  */
  public int countSolutions(){
-   for (int x = 0; x < board.length; x++) {
+   if (board.length == 0) return 1; //special case: 0*0 has exactly 1 solution
+   for (int x = 0; x < board.length; x++) { //if board starts with any non-zero val, throws exception
      for (int y = 0; y < board[0].length; y++) {
        if (board[x][y] != 0) {
          throw new IllegalStateException();
         }
       }
     }
-    return cSHelp(0);
+    int ret = cSHelp(0);
+    clear();
+    return ret;
   }
 
 //--------------------------------
-//Helper Methods for the two main methods solve() and countSolutions()
+//Helper Methods for the two main methods solve() and countSolutions(), and clear() to clear board
 
 private boolean sHelp(int c) {
-  if (c >= board[0].length) return true;
+  if (c >= board[0].length) return true; //base case
   for (int r = 0; r < board.length; r++) {
     if (safe(r,c)) {
       addQueen(r,c);
@@ -156,8 +163,8 @@ private boolean sHelp(int c) {
 
 
 private int cSHelp(int c){
-  int count = 0;
-  if (c >= board.length) return 1;
+  int count = 0; //keeps count of the amount of solutions
+  if (c >= board.length) return 1; //base case
   for (int r = 0; r < board.length; r++) {
     if (addQueen(r,c) == true) count = count + cSHelp(c + 1);
     removeQueen(r,c);
@@ -165,19 +172,59 @@ private int cSHelp(int c){
   return count;
 }
 
- public static void main(String[] args) {
-     QueenBoard A = new QueenBoard(8);
-     System.out.println(A.solve());
-
-     QueenBoard B = new QueenBoard(10);
-     System.out.println(B.countSolutions());
-
-
-
+//clears board, everything becomes 0
+ private void clear() {
+   for (int x = 0; x < board.length; x++) {
+     for (int y = 0; y < board[0].length; y++) {
+       board[x][y]=0;
+     }
+   }
  }
 
+/*
+ public static void main(String[] args) {
+ //testing 0,1,2,3,4,5,8,10 & comparing to actual solutions from wikipedia
+ //these do match up
+     QueenBoard A = new QueenBoard(0);
+     System.out.println(A.countSolutions());
+     System.out.println(A.solve());
+     System.out.println(A);
+
+     QueenBoard B = new QueenBoard(1);
+     System.out.println(B.countSolutions());
+     System.out.println(B.solve());
+     System.out.println(B);
+
+     QueenBoard C = new QueenBoard(2);
+     System.out.println(C.countSolutions());
+     System.out.println(C.solve());
+     System.out.println(C);
+
+     QueenBoard D = new QueenBoard(3);
+     System.out.println(D.countSolutions());
+     System.out.println(D.solve());
+     System.out.println(D);
+
+     QueenBoard E = new QueenBoard(4);
+     System.out.println(E.countSolutions());
+     System.out.println(E.solve());
+     System.out.println(E);
+
+     QueenBoard F = new QueenBoard(5);
+     System.out.println(F.countSolutions());
+     System.out.println(F.solve());
+     System.out.println(F);
+
+     QueenBoard G = new QueenBoard(8);
+     System.out.println(G.countSolutions());
+     System.out.println(G.solve());
+     System.out.println(G);
+
+     QueenBoard H = new QueenBoard(10);
+     System.out.println(H.countSolutions());
+     System.out.println(H.solve());
+     System.out.println(H);
+ }
+*/
+
 }
-
-
-//countSolutions backtracks and counts all the solutions
-//solve solves just one state
